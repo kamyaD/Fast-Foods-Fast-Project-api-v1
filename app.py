@@ -11,10 +11,16 @@ def addOrder():
     return jsonify({'orders' : orders})
 
 
-
 @app.route('/api/v1/all_orders', methods=['GET']) # GET API that gets all orders
 def returnAll():
     return jsonify({'orders': orders})
+
+
+@app.route('/api/v1/all_orders/<string:name>', methods=['PUT']) # Update the status of an order
+def editOrder(name):
+    ords=[order for order in orders if order['name']== name]
+    ords[0]['name'] = request.get_json(['name'])
+    return jsonify({'order' : ords[0]})
 
 if __name__ == '__main__':
     app.run(debug=False)
