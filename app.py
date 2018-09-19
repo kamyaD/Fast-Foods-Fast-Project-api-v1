@@ -28,5 +28,11 @@ def returnOne(name):
     ords=[order for order in orders if order['name']== name]
     return jsonify({'order' : ords[0]})
 
+@app.route('/api/v1/all_orders/<string:name>', methods=['Delete']) # Delete an order
+def deleteOrder(name):
+    delOrder=[order for order in orders if order['name']== name]
+    orders.remove(delOrder[0])
+    return jsonify({'orders': orders})
+    
 if __name__ == '__main__':
     app.run(debug=False)
