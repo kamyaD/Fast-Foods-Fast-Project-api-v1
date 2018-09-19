@@ -22,5 +22,11 @@ def editOrder(name):
     ords[0]['name'] = request.get_json(['name'])
     return jsonify({'order' : ords[0]})
 
+
+@app.route('/api/v1/all_orders/<string:name>', methods=['GET']) # fetch Specific order
+def returnOne(name):
+    ords=[order for order in orders if order['name']== name]
+    return jsonify({'order' : ords[0]})
+
 if __name__ == '__main__':
     app.run(debug=False)
