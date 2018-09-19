@@ -12,7 +12,9 @@ def addOrder():
 
 
 
-
+@app.route('/api/v1/all_orders', methods=['GET']) # GET API that gets all orders
+def returnAll():
+    return jsonify({'orders': orders})
 
 if __name__ == '__main__':
     app.run(debug=False)
