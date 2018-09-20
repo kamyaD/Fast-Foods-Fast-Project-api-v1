@@ -1,13 +1,20 @@
 #import objects from the Flask model
 from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for 
 
-app = Flask(__name__, template_folder='v1') #define app and telling flask that template folder is named v1
-orders = [{'name':'coffee'}, {'name':'Beaf'},{'name' : 'Milk'}] # Making a Dictionary of orders that is to be used to test the code
+# local imports
+from app.customer_model import customer
+from app.order_model import orders
+from app.admin_model import admin
 
+
+app = Flask(__name__) # define app 
 
 @app.route('/api/v1/order', methods=['GET']) #Testing the jsonify out put on a browser
 def getOrders():
     return jsonify({'message' : 'Itworks!'})
+
+@app.route('/api/v1/register/', method=['POST'])
+
     
 @app.route('/api/v1/all_orders', methods=['POST']) # Places a new Order
 def addOrder():
