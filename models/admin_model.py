@@ -3,7 +3,7 @@ from flask import Flask
 app = Flask(__name__)
 admins = []
 
-class admin():
+class Admin():
     self.admin_infomation = {}
     self.admins = admins
 
