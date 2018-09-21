@@ -4,7 +4,7 @@ import os
 
 
 os.sys.path.append("../")
-from views.views import app
+from app.views.views import app
 
 class apiEndpoints(unittest.TestCase):
     
