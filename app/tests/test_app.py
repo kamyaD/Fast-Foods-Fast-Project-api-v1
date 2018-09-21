@@ -1,8 +1,10 @@
+import json
 import unittest
+import os
 
-#local imports
-from app import orders
-from app import app 
+
+os.sys.path.append("../")
+from views.views import app
 
 class apiEndpoints(unittest.TestCase):
     
@@ -11,42 +13,74 @@ class apiEndpoints(unittest.TestCase):
     def test_returnAll(self):
         client = app.test_client(self)
         output = client.get(
-            '/api/v1/all_orders', content_type='html/text')
+            '/api/v1/all_orders', content_type='application/json')
         self.assertEqual(output.status_code, 200)
 
     
     # Ensure that new order is created
     def test_addOrder(self):
         client = app.test_client(self)
-        self.orders = [{'name':'coffee'}, {'name':'Beaf'},{'name' : 'Milk'}]
-        self.order= {'name':'Bread'}
-        self.new_orders=orders.append(self.order)
+        self.order= {
+            "id": 1,
+            "name": "coffe",
+            "price": 89
+        }
         output = client.post(
-            '/api/v1/all_orders', data = self.new_orders)
+            '/api/v1/all_orders', data = json.dumps(self.order), content_type="application/json")
+        response = client.get("/api/v1/all_orders/1", content_type="application/json")
         self.assertTrue(output.status_code, 201 )
-    
+        self.assertEqual(self.order, json.loads(response.data))
+
     # Ensure status of an order is Updated
     def test_editOrder(self):
         client = app.test_client(self)
-        self.orders = [{'name':'coffee'}, {'name':'Beaf'},{'name' : 'Milk'}]
-        self.order= {'name':'Tea'}
-        self.new_orders= [order for order in orders if order['name']== ['coffee']]
-        self.orders[0]['name'] = self.order
+        self.new_orders={
+            "id": 1,
+            "name": "Milk",
+            "price": 100
+        }
+        self.old_edit= {
+            "id": 1,
+            "name": "bread",
+            "price": 200
+        }
+        posted = client.post("/api/v1/all_orders", data=json.dumps(self.old_edit), content_type="application/json")
         output = client.put(
-            '/api/v1/all_orders' , data = self.new_orders)
-        self.assertTrue(output.status_code, 201)
+            '/api/v1/all_orders/1' , data = json.dumps(self.new_orders), content_type="application/json")
+        resp = client.get("/api/v1/all_orders/1", content_type="application/json")
+        # print(resp.data)
+        self.assertEqual(json.loads(resp.data), self.new_orders)
+        self.assertTrue(resp.status_code, 200)
+
     
     # Ensure  an order is deleted
+
     def test_deleteOrder(self):
         client = app.test_client(self)
-        self.orders = [{'name':'coffee'}, {'name':'Beaf'},{'name' : 'Milk'}]
-        self.new_orders=[order for order in orders if order['name']== ['coffee']]
-        self.orders.remove(self.orders[0])
-        return self.new_orders
+        self.orders = [ {
+            "id": 1,
+            "name": "bread",
+            "price": 50
+        },  {
+            "id": 2,
+            "name": "milk",
+            "price": 100
+        }]
+        self.new_orders= [{
+            "id": 2,
+            "name": "milk",
+            "price": 100
+        }]
+        # print(res.data)
         output = client.delete(
-            '/api/v1/all_orders' , data = self.new_orders)
-        self.assertTrue(output.status_code, 200)
-        self.assertEqual(self.new_orders,[{'name':'Beaf'},{'name' : 'Milk'}])
+            '/api/v1/all_orders/1' , content_type="application/json")
+        res = client.get("/api/v1/all_orders", content_type="application/json")
+        self.assertNotEqual(json.loads(res.data), 'orders: []')
+        self.assertTrue(output.status_code, 201)
+        # print(output.data)
+        # self.assertEqual(1,2)
+        # self.assertNotIn(self.orders, self.new_orders)
+
     
 
 
