@@ -9,4 +9,4 @@ Fast-Food-Fast is a food delivery service app for a restaurant. This is a contin
 
 ## Heroku URL
 
-https://fast-foods-fast-api1.herokuapp.com/api/v1/all_orders
+https://fast-foods-fast-api1.herokuapp.com/
