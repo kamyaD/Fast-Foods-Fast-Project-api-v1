@@ -27,7 +27,7 @@ http://localhost:5000/api/v1/all_orders
 3: Activate the Virtual Environment
 
 4: Install Flask
-
+ 
 5: Run run.py file
 
 6: Paste the URL http://localhost:5000/v1 on Post man
