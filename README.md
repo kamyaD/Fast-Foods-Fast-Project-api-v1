@@ -30,7 +30,7 @@ http://localhost:5000/api/v1/all_orders
  
 5: Run run.py file
 
-6: Paste the URL http://localhost:5000/v1 on Post man
+6: Paste the URL http://localhost:5000/api/v1/all_orders on Post man
 
 7: Select different APIs and test them 
 
