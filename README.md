@@ -3,10 +3,35 @@
 
 
 # Fast-Foods-Fast-Project-api-v1
-Fast-Food-Fast is a food delivery service app for a restaurant. This is a continuation of the previous project with server based virtual Environment
+Fast-Food-Fast is a food delivery service app for a restaurant. The second face of this project is a set of API endpoints used to store data structures in memory.
 
+## Motivation
 
+This project was created as a way to save time spent on long ques at restaurants waiting to be served. This project therefore saves time in that the user can order for food at the convenience of his mobile phone, monitor the order and collect when his order is served.
+
+## Pivotaltracker Link:
+
+https://www.pivotaltracker.com/n/projects/2195274
 
 ## Heroku URL
 
 https://fast-foods-fast-api1.herokuapp.com/
+
+## Testing:
+1: Install Python 
+
+2: Install Virtual Environment
+
+6: Install Postman
+
+3: Activate the Virtual Environment
+
+4: Install Flask
+
+5: Run run.py file
+
+6: Paste the URL http://localhost:5000/v1 on Post man
+
+7: Select different APIs and test them 
+
+
