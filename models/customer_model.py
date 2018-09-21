@@ -3,7 +3,7 @@ from flask import Flask
 app = Flask(__name__)
 customers = []
 
-class customer():
+class Customer():
     self.customer_infomation = {}
     self.customers = customers
 
