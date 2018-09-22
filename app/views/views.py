@@ -52,5 +52,3 @@ def deleteOrder(name):
             del orders[i]
     return jsonify({'orders': orders})
 
-if __name__ == '__main__':
-    app.run(debug=False)
