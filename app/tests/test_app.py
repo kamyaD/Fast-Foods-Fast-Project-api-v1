@@ -3,7 +3,7 @@ import unittest
 import os
 
 
-os.sys.path.append("../")
+# os.sys.path.append("../")
 from app.views.views import app
 
 class apiEndpoints(unittest.TestCase):
@@ -50,32 +50,18 @@ class apiEndpoints(unittest.TestCase):
         resp = client.get("/api/v1/all_orders/1", content_type="application/json")
         # print(resp.data)
         self.assertEqual(json.loads(resp.data), self.new_orders)
-        self.assertTrue(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
 
     
     # Ensure  an order is deleted
 
     def test_deleteOrder(self):
         client = app.test_client(self)
-        self.orders = [ {
-            "id": 1,
-            "name": "bread",
-            "price": 50
-        },  {
-            "id": 2,
-            "name": "milk",
-            "price": 100
-        }]
-        self.new_orders= [{
-            "id": 2,
-            "name": "milk",
-            "price": 100
-        }]
         # print(res.data)
         output = client.delete(
             '/api/v1/all_orders/1' , content_type="application/json")
         res = client.get("/api/v1/all_orders", content_type="application/json")
-        self.assertNotEqual(json.loads(res.data), 'orders: []')
+        self.assertNotEqual(res.data, 'orders: []')
         self.assertTrue(output.status_code, 201)
         # print(output.data)
         # self.assertEqual(1,2)
