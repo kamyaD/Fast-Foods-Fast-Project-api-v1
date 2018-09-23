@@ -1,4 +1,5 @@
 from flask import Flask
 from app.views.views import app
 
-app.run()
+if __name__ == '__main__':
+    app.run()
