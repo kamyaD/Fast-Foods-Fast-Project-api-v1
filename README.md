@@ -16,7 +16,7 @@ https://www.pivotaltracker.com/n/projects/2195274
 
 ## Heroku URL
 
-http://localhost:5000/api/v1/all_orders
+https://fast-foods-fast-api1.herokuapp.com
 
 ## Testing:
 1: Install Python 
