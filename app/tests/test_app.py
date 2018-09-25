@@ -13,7 +13,7 @@ class apiEndpoints(unittest.TestCase):
     def test_returnAll(self):
         client = app.test_client(self)
         output = client.get(
-            '/orders_all', content_type='application/json')
+            '/api/v1/orders_all', content_type='application/json')
         self.assertEqual(output.status_code, 200)
 
 
@@ -26,7 +26,7 @@ class apiEndpoints(unittest.TestCase):
             "price": 89
         }
         output = client.post(
-            '/orders_post', data = json.dumps(self.order), content_type="application/json")
+            '/api/v1/orders_post', data = json.dumps(self.order), content_type="application/json")
         response = client.get("/orders_post/1", content_type="application/json")
         self.assertTrue(output.status_code, 201 )
         self.assertEqual(self.order, json.loads(response.data))
@@ -44,10 +44,10 @@ class apiEndpoints(unittest.TestCase):
             "name": "bread",
             "price": 200
         }
-        posted = client.post("/orders_put", data=json.dumps(self.old_edit), content_type="application/json")
+        posted = client.post("/api/v1/orders_put", data=json.dumps(self.old_edit), content_type="application/json")
         output = client.put(
             'orders/1' , data = json.dumps(self.new_orders), content_type="application/json")
-        resp = client.get("/orders_put/1", content_type="application/json")
+        resp = client.get("/api/v1/orders_put/1", content_type="application/json")
         # print(resp.data)
         self.assertEqual(json.loads(resp.data), self.new_orders)
         self.assertEqual(resp.status_code, 200)
@@ -59,8 +59,8 @@ class apiEndpoints(unittest.TestCase):
         client = app.test_client(self)
         # print(res.data)
         output = client.delete(
-            '/orders_del/' , content_type="application/json")
-        res = client.get("/orders_del/", content_type="application/json")
+            '/api/v1/orders_del/' , content_type="application/json")
+        res = client.get("/api/v1/orders_del/", content_type="application/json")
         self.assertNotEqual(res.data, 'orders: []')
         self.assertTrue(output.status_code, 201)
         # print(output.data)
