@@ -25,7 +25,7 @@ class apiEndpoints(unittest.TestCase):
             "price": 89
         }
         output = client.post(
-            '/api/v1/orders_post/1', data = json.dumps(self.order), content_type="application/json")
+            '/api/v1/orders_post', data = json.dumps(self.order), content_type="application/json")
         response = client.get("/api/v1/orders_get/1", content_type="application/json")
         self.assertTrue(output.status_code, 201 )
        
@@ -59,7 +59,7 @@ class apiEndpoints(unittest.TestCase):
         # print(res.data)
         output = client.delete(
             '/api/v1/orders_del/1' , content_type="application/json")
-        res = client.get("/api/v1/orders_del/1", content_type="application/json")
+        res = client.get("/api/v1/orders_all", content_type="application/json")
         self.assertNotEqual(res.data, 'orders: []')
         self.assertTrue(output.status_code, 201)
         # print(output.data)
