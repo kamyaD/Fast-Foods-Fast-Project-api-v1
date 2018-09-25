@@ -1,10 +1,10 @@
 #import objects from the Flask model
 from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for 
 
-
 app = Flask(__name__, template_folder='v1') #define app and telling flask that template folder is named v1
 
 orders=[]
+special = "[@_!#$%^&*()<>?/\|}{~:]"
 
 @app.route('/api/v1/order', methods=['GET']) #Testing the jsonify out put on a browser
 def getOrders():
@@ -16,11 +16,15 @@ def addOrder():
     order_from_user = request.get_json()
     order = dict()
     order['price']= order_from_user['price']
-    order['name']= order_from_user['name']
+    order['name'] = order_from_user['name']
+    if not order['name'] or len(order['name'].strip()) == 0:
+        return jsonify({"message": "order name can't be blank"}), 401
+    elif order['name'] in special:
+        return jsonify({"message": "order name can't be Special character"}), 401
     order['id']=len(orders)+1
     orders.append(order)
     return jsonify({'orders' : orders})
-
+    
 
 @app.route('/api/v1/all_orders', methods=['GET']) # GET API that gets all orders
 def returnAll():
