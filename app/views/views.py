@@ -1,17 +1,18 @@
 #import objects from the Flask model
-from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for 
+from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for, Blueprint 
 
-app = Flask(__name__, template_folder='v1') #define app and telling flask that template folder is named v1
+app = Flask(__name__) #define app and telling flask that template folder is named v1
+api = Blueprint('api', __name__)
+app.register_blueprint(API_V1, url_prefix='/api/v1')
 
 orders=[]
 special = "[@_!#$%^&*()<>?/\|}{~:]"
 
-@app.route('/api/v1/order', methods=['GET']) #Testing the jsonify out put on a browser
+@api.route('/test', methods=['GET']) #Testing the jsonify out put on a browser
 def getOrders():
     return jsonify({'message' : 'Itworks!'})
 
-
-@app.route('/api/v1/all_orders', methods=['POST']) # Places a new Order
+@api.route('/order', methods=['POST']) # Places a new Order
 def addOrder():
     order_from_user = request.get_json()
     order = dict()
@@ -26,12 +27,12 @@ def addOrder():
     return jsonify({'orders' : orders})
     
 
-@app.route('/api/v1/all_orders', methods=['GET']) # GET API that gets all orders
+@api.route('/order_all', methods=['GET']) # GET API that gets all orders
 def returnAll():
     return jsonify({'orders': orders})
 
 
-@app.route('/api/v1/all_orders/<int:name>', methods=['PUT']) # Update the status of an order
+@api.route('/order<int:name>', methods=['PUT']) # Update the status of an order
 def editOrder(name):
     for order in orders:
         if order['id']== name:
@@ -41,7 +42,7 @@ def editOrder(name):
     return jsonify({'order' : orders})
 
 
-@app.route('/api/v1/all_orders/<int:name>', methods=['GET']) # fetch Specific order
+@api.route('/order<int:name>', methods=['GET']) # fetch Specific order
 def returnOne(name):
     for order in orders:
         if order['id']== name:
@@ -49,7 +50,7 @@ def returnOne(name):
     return jsonify({"message":"Iten doesnt exist"})
 
 
-@app.route('/api/v1/all_orders/<int:name>', methods=['Delete']) # Delete an order
+@api.route('/order<int:name>', methods=['Delete']) # Delete an order
 def deleteOrder(name):
     for i, order in enumerate(orders):
         if order['id']== name:
