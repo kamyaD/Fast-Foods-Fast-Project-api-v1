@@ -46,8 +46,8 @@ class apiEndpoints(unittest.TestCase):
         }
         posted = client.post("/orders", data=json.dumps(self.old_edit), content_type="application/json")
         output = client.put(
-            '/api/v1/all_orders/1' , data = json.dumps(self.new_orders), content_type="application/json")
-        resp = client.get("/api/v1/all_orders/1", content_type="application/json")
+            'orders/1' , data = json.dumps(self.new_orders), content_type="application/json")
+        resp = client.get("orders/1", content_type="application/json")
         # print(resp.data)
         self.assertEqual(json.loads(resp.data), self.new_orders)
         self.assertEqual(resp.status_code, 200)
