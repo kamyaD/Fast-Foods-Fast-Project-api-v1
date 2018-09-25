@@ -27,7 +27,7 @@ class apiEndpoints(unittest.TestCase):
         }
         output = client.post(
             '/api/v1/orders_post', data = json.dumps(self.order), content_type="application/json")
-        response = client.get("/orders_post/1", content_type="application/json")
+        response = client.get("/api/v1/orders_post/1", content_type="application/json")
         self.assertTrue(output.status_code, 201 )
         self.assertEqual(self.order, json.loads(response.data))
 
