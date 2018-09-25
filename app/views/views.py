@@ -6,7 +6,7 @@ api = Blueprint('api', __name__)
 
 
 orders=[]
-special = "[@_!#$%^&*()<>?/\|}{~:]"
+special = "[@_!#$%^&*()<>?/\\|}{~:]"
 
 @api.route('/orders', methods=['GET']) #Testing the jsonify out put on a browser
 def getOrders():
