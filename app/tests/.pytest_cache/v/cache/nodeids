@@ -1,0 +1,10 @@
+[
+  "test_app.py::apiEndpoints::test_addOrder",
+  "test_app.py::apiEndpoints::test_deleteOrder",
+  "test_app.py::apiEndpoints::test_editOrder",
+  "test_app.py::apiEndpoints::test_returnAll",
+  "test_user.py::UserRegistration::test_place_order",
+  "test_user.py::UserRegistration::test_user_details",
+  "test_user.py::UserRegistration::test_user_login",
+  "test_user.py::UserRegistration::test_user_logout"
+]

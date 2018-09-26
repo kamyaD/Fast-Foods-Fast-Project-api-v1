@@ -1,0 +1,11 @@
+{
+  "test_fooditems.py": true,
+  "test_order.py::dbEndpoints::test_order_empty_db": true,
+  "test_order.py::test_order_empty_db": true,
+  "test_user.py::UserRegistration": true,
+  "test_user.py::UserRegistration::test_get_specific_order": true,
+  "test_user.py::UserRegistration::test_place_order": true,
+  "test_user.py::UserRegistration::test_user_details": true,
+  "test_user.py::UserRegistration::test_user_login": true,
+  "test_user.py::UserRegistration::test_user_logout": true
+}
