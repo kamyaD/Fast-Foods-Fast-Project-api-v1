@@ -12,7 +12,7 @@ class MyDatabase:
     connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
     connection = psycopg2.connect(connection_rout)
 
-
+    #creating user registration table
     def create_users(self):
 
         self.connection_rout
@@ -23,6 +23,7 @@ class MyDatabase:
         cursor.execute(table1)
         self.connection.commit()
 
+    # creating Orders table
     def  create_Orders(self):
         self.connection_rout
         self.connection
@@ -32,6 +33,7 @@ class MyDatabase:
         cursor.execute(table2)
         self.connection.commit()
 
+    # placing an order:
     def place_order(self):
         self.connection_rout
         self.connection
@@ -41,11 +43,19 @@ class MyDatabase:
         cursor.execute(insert1)
         self.connection.commit()
 
+    # Get a list of orders:
+    def all_orders(self):
+        self.connection_rout
+        self.connection
+        all= "SELECT * FROM orders"
+        cursor = self.connection.cursor()
+        cursor.execute(all)
+        self.connection.commit()
+        orders = cursor.fetchall()
+        for order in orders:
+            pprint(order)
 
-
-
-
-
+    
 
         #cursor.execute(table1_insert)
         #cursor.execute(table_dt_delete)
@@ -79,5 +89,7 @@ if __name__=="__main__":
         #MyDatabase.create_users(MyDatabase)
         #MyDatabase.create_Orders(MyDatabase)
         # MyDatabase.GetOne(MyDatabase)
-         MyDatabase.place_order(MyDatabase)
+         #MyDatabase.place_order(MyDatabase)
+         MyDatabase.all_orders(MyDatabase)
+
 
