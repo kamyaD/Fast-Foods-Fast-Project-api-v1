@@ -2,9 +2,6 @@ import psycopg2
 import sys
 
 
-#local imports
-from tables import table1,table1_insert,table_dt_delete,edit_table
-
 
 from pprint import pprint
 
@@ -55,14 +52,22 @@ class MyDatabase:
         for order in orders:
             pprint(order)
 
+    # Get a specific order:
+    def get_specific_order(self):
+        self.connection_rout
+        self.connection
+        order= u"SELECT * FROM orders WHERE order_id = 1"
+        cursor = self.connection.cursor()
+        cursor.execute(order)
+        self.connection.commit()
+        orders = cursor.fetchall()
+        for order in orders:
+            pprint(order)
+
     
 
-        #cursor.execute(table1_insert)
-        #cursor.execute(table_dt_delete)
-        #cursor.execute(edit_table)
-        #conn.commit()
-
-
+    #     orders = cursor.fetchall()
+    #     pprint(orders)
     #def select(self):
     #     connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
     #     connection = psycopg2.connect(connection_rout)
@@ -90,6 +95,7 @@ if __name__=="__main__":
         #MyDatabase.create_Orders(MyDatabase)
         # MyDatabase.GetOne(MyDatabase)
          #MyDatabase.place_order(MyDatabase)
-         MyDatabase.all_orders(MyDatabase)
+         #MyDatabase.all_orders(MyDatabase)
+         MyDatabase.get_specific_order(MyDatabase)
 
 
