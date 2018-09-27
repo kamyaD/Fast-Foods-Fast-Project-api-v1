@@ -1,5 +1,0 @@
-{
-  "app/tests/test_app.py": true,
-  "app/tests/test_app.py::apiEndpoints::test_addOrder": true,
-  "app/tests/test_app.py::apiEndpoints::test_editOrder": true
-}
