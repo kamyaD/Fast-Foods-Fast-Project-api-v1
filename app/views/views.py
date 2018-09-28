@@ -21,6 +21,7 @@ def addOrder():
     order = dict()
     order['price']= order_from_user['price']
     order['name'] = order_from_user['name']
+    order['status']= "pending"
     if not order['name'] or len(order['name'].strip()) == 0:
         return jsonify({"message": "order name can't be blank"}), 401
     elif order['name'] in special:
@@ -41,6 +42,7 @@ def editOrder(name):
         if order['id']== name:
             order['name']=request.get_json()['name']
             order['price']=request.get_json()['price']
+            order['status']=request.get_json()['status']
 
     return jsonify({'order' : orders})
 
