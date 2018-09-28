@@ -14,7 +14,7 @@ This project was created as a way to save time spent on long ques at restaurants
 https://www.pivotaltracker.com/n/projects/2195274
 
 ## Documentation link:
-https://cloudy-water-7712.postman.co/collections/5262024-fcd660d5-7087-46a0-9266-515729c8f8be?workspace=d3c7d0e9-6e62-496f-8d5f-95066dc90b2d
+https://documenter.getpostman.com/view/5262024/RWgjYMFe
 
 ## Heroku URL
 
