@@ -40,6 +40,7 @@ class ApiEndpoints(unittest.TestCase):
             "id": 1,
             "name": "Milk",
             "price": 100
+        }
             
         self.old_edit= {
             "id": 1,
