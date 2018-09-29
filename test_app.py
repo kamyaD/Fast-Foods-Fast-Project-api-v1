@@ -25,6 +25,7 @@ class ApiEndpoints(unittest.TestCase):
             "id": 1,
             "name": "coffe",
             "price": 89
+            
         }
         output = client.post(
             '/api/v1/orders', data = json.dumps(self.order), content_type="application/json")
@@ -39,11 +40,13 @@ class ApiEndpoints(unittest.TestCase):
             "id": 1,
             "name": "Milk",
             "price": 100
+            "status":"served"
         }
         self.old_edit= {
             "id": 1,
             "name": "bread",
             "price": 200
+            "status":"pending"
         }
         posted = client.post("/api/v1/orders", data=json.dumps(self.old_edit), content_type="application/json")
         output = client.put(
