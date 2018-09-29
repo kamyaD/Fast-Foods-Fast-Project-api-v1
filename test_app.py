@@ -40,13 +40,12 @@ class ApiEndpoints(unittest.TestCase):
             "id": 1,
             "name": "Milk",
             "price": 100
-            "status":"pending"
-        }
+            
         self.old_edit= {
             "id": 1,
             "name": "bread",
             "price": 200
-            "status":"pending"
+           
         }
         posted = client.post("/api/v1/orders", data=json.dumps(self.old_edit), content_type="application/json")
         output = client.put(
