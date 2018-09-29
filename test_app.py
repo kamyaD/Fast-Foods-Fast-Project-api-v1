@@ -40,7 +40,7 @@ class ApiEndpoints(unittest.TestCase):
         self.new_orders={
             "id": 1,
             "name": "Milk",
-            "price": 100
+            "price": 100,
             "status": "pending"
             
         }
@@ -48,7 +48,7 @@ class ApiEndpoints(unittest.TestCase):
         self.old_edit= {
             "id": 1,
             "name": "bread",
-            "price": 200
+            "price": 200,
             "status": "served"
             
            
