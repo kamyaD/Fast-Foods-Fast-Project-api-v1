@@ -59,7 +59,7 @@ class ApiEndpoints(unittest.TestCase):
         resp = client.get("/api/v1/orders/1", content_type="application/json")
         # print(resp.data)
         #self.assertEqual(json.loads(resp.data), self.new_orders)
-        self.assertEqual(resp.status_code, 201)
+        self.assertEqual(resp.status_code, 200)
 
 
     # Ensure  an order is deleted
