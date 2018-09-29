@@ -41,14 +41,14 @@ class ApiEndpoints(unittest.TestCase):
             "id": 1,
             "name": "Milk",
             "price": 100
-            "status":"pending"
+            
         }
             
         self.old_edit= {
             "id": 1,
             "name": "bread",
             "price": 200
-            "status":"served"
+            
            
         }
         posted = client.post("/api/v1/orders", data=json.dumps(self.old_edit), content_type="application/json")
@@ -56,7 +56,7 @@ class ApiEndpoints(unittest.TestCase):
             '/api/v1/orders/1' , data = json.dumps(self.new_orders), content_type="application/json")
         resp = client.get("/api/v1/orders/1", content_type="application/json")
         # print(resp.data)
-        self.assertNotEqual(json.loads(resp.data), self.new_orders)
+        self.assertEqual(json.loads(resp.data), self.new_orders)
         self.assertEqual(resp.status_code, 200)
 
 
