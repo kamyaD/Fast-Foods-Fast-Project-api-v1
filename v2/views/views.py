@@ -1,11 +1,12 @@
 #import objects from the Flask model
-from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for, Blueprint 
-
+from flask import Flask, render_template, jsonify, request,session,flash,redirect,url_for, Blueprint
+from app.models.connection import MyDatabase
 
 
  #define app and telling flask that template folder is named v1
 app = Flask(__name__)
 api = Blueprint('api', __name__)
+DB= MyDatabase()
 
 
 orders=[]
@@ -18,8 +19,8 @@ special = "[@_!#$%^&*()<>?/\\|}{~:]"
 @api.route('/orders', methods=['POST']) # Places a new Order
 def addOrder():
     order_from_user = request.get_json()
-    order = dict()
-    order['price']= order_from_user['price']
+    order = {}
+    #order['price']= order_from_user['price']
     order['name'] = order_from_user['name']
     order['status']= "pending"
     if not order['name'] or len(order['name'].strip()) == 0:
@@ -27,9 +28,9 @@ def addOrder():
     elif order['name'] in special:
         return jsonify({"message": "order name can't be Special character"}), 401
     order['id']=len(orders)+1
-    orders.append(order)
+    return orders
     return jsonify({'orders' : orders})
-    
+
 
 @api.route('/orders', methods=['GET']) # GET API that gets all orders
 def returnAll():
