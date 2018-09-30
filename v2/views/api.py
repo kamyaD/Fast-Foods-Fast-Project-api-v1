@@ -110,6 +110,16 @@ def editOrder(name):
              customer['customer_id'])
             connection.commit()
 
+@api.route('/menu', methods=['GET']) # GET API that gets all orders
+def returnAll():
+    menu =cursor.execute( "SELECT * FROM menu")
+    connection.commit()
+    return jsonify({'orders': menu})
+
+
+
+
+
 
 
 
