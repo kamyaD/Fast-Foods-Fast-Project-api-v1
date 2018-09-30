@@ -7,7 +7,7 @@ import psycopg2
 app = Flask(__name__)
 api = Blueprint('api', __name__)
 
-
+# user registration
 @api.route('/register', methods=['POST'])
 def register():
         name = request.get_json()['name' ]
@@ -28,12 +28,12 @@ def register():
         registered = 'Sucessfully registered you may now log in with your username and password'
         return jsonify ({ 'message': registered })
 
-
+# user login
 @app.route('/login', methods=['POST'])
 def login():
     name = request.get_json()['name']
     password = request.get_json()['password']
-    login_data = cur.execute(
+    login_data = cursor.execute(
         "SELECT * FROM user WHERE user_name = %s",
         [username])
 
@@ -52,6 +52,36 @@ def login():
     else:
         incorrect = "The user name is incorrect please try again"
         return {'message': incorrect}
+
+# Placing an order
+@api.route('/orders', methods=['POST'])
+def addOrder():
+    order['name'] = order_from_user['name']
+    order['status']= "pending"
+    if not order['name'] or len(order['name'].strip()) == 0:
+        return jsonify({"message": "order name can't be blank"}), 401
+    elif order['name'] in special:
+        return jsonify({"message": "order name can't be Special character"}), 401
+    order['id']=len(orders)+1
+
+    if order['name'] and order['status']:
+        cursor.execute("INSERT INTO orders(order_name,order_status) VALUES(%s,%s) "),
+        (order['name'] ,
+         order['status'])
+        connection.commit()
+
+        responce="Your order has been successfuly created"
+        return jsonify({"message":responce)
+    else:
+        error_message= "Incorrect order, please try again"
+        return jsonify({"message": error_message})
+
+
+
+
+
+
+
 
 
 
