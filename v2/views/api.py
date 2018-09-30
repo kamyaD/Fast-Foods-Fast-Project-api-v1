@@ -57,6 +57,7 @@ def login():
 @api.route('/orders', methods=['POST'])
 def addOrder():
     order['name'] = order_from_user['name']
+    customer['customer_id'] = id_from_user['id']
     order['status']= "pending"
     if not order['name'] or len(order['name'].strip()) == 0:
         return jsonify({"message": "order name can't be blank"}), 401
@@ -64,10 +65,11 @@ def addOrder():
         return jsonify({"message": "order name can't be Special character"}), 401
     order['id']=len(orders)+1
 
-    if order['name'] and order['status']:
+    if order['name'] and customer['customer_id']:
         cursor.execute("INSERT INTO orders(order_name,order_status) VALUES(%s,%s) "),
         (order['name'] ,
-         order['status'])
+         order['status'],
+         customer['customer_id'])
         connection.commit()
 
         responce="Your order has been successfuly created"
@@ -75,6 +77,20 @@ def addOrder():
     else:
         error_message= "Incorrect order, please try again"
         return jsonify({"message": error_message})
+
+# Get the order histry of a user
+@api.route('/orders/<int:name>', methods=['GET']) # fetch Specific order
+def returnOne(name):
+    for  order in orders:
+        if order['id']== name:
+            order=cursor.execute("SELECT * FROM orders WHERE customer_id=customer_id")
+            return jsonify(order)
+        else:
+            return jsonify({"message":"Item doesnt exist"})
+
+
+
+
 
 
 
