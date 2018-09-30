@@ -110,11 +110,29 @@ def editOrder(name):
              customer['customer_id'])
             connection.commit()
 
-@api.route('/menu', methods=['GET']) # GET API that gets all orders
+# GET API that gets all orders
+@api.route('/menu', methods=['GET'])
 def returnAll():
     menu =cursor.execute( "SELECT * FROM menu")
     connection.commit()
     return jsonify({'orders': menu})
+
+# Add a meal option to a menu
+@api.route('/menu/<int:name>', methods=['PUT'])
+def editmenu(name):
+    for item in menu:
+        if item['id']== name:
+            item['name']=request.get_json()['name']
+            item['description']=request.get_json()['description']
+            item['price']=request.get_json()['price']
+            cursor.execute("INSERT INTO menu(item_name,item_description,item_price) VALUES(%s,%s,%s) WHERE item_name=item_name   "),
+            (item['name'],
+             item['description'],
+             item['price'])
+            connection.commit()
+
+
+
 
 
 
