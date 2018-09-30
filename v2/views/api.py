@@ -66,14 +66,14 @@ def addOrder():
     order['id']=len(orders)+1
 
     if order['name'] and customer['customer_id']:
-        cursor.execute("INSERT INTO orders(order_name,order_status) VALUES(%s,%s) "),
+        cursor.execute("INSERT INTO orders(order_name,order_status,customer_id) VALUES(%s,%s) "),
         (order['name'] ,
          order['status'],
          customer['customer_id'])
         connection.commit()
 
         responce="Your order has been successfuly created"
-        return jsonify({"message":responce)
+        return jsonify({"message":responce})
     else:
         error_message= "Incorrect order, please try again"
         return jsonify({"message": error_message})
@@ -84,9 +84,31 @@ def returnOne(name):
     for  order in orders:
         if order['id']== name:
             order=cursor.execute("SELECT * FROM orders WHERE customer_id=customer_id")
+            connection.commit()
             return jsonify(order)
         else:
             return jsonify({"message":"Item doesnt exist"})
+
+# Get all orders:
+@api.route('/orders', methods=['GET']) # GET API that gets all orders
+def returnAll():
+    all =cursor.execute( "SELECT * FROM orders")
+    connection.commit()
+    return jsonify({'orders': all})
+
+
+@api.route('/orders/<int:name>', methods=['PUT']) # Update the status of an order
+def editOrder(name):
+    for order in orders:
+        if order['id']== name:
+            order['name']=request.get_json()['name']
+            order['price']=request.get_json()['price']
+            order['status']=request.get_json()['status']
+            cursor.execute("INSERT INTO orders(order_status) VALUES(%s) WHERE order_name=name   "),
+            (order['name'],
+             order['status'],
+             customer['customer_id'])
+            connection.commit()
 
 
 
