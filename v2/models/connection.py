@@ -10,32 +10,24 @@ class MyDatabase:
     connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
     connection = psycopg2.connect(connection_rout)
     
-    #creating user registration table
-    def create_orders(self):
 
+    
+    # create user login
+    def create_user(self):
         self.connection_rout
         self.connection
-        table1 = "CREATE TABLE IF NOT EXISTS orders(user_id SERIAL PRIMARY KEY, name VARCHAR(25) status VARCHAR(25))"
+        login="CREATE TABLE IF NOT EXISTS login(user_id SERIAL NOT NULL PRIMARY KEY, user_name VARCHAR(25),user_pw VARCHAR (25))"
         cursor = self.connection.cursor()
-        cursor.execute(table1)
+        cursor.execute(login)
         self.connection.commit()
     
-    # create menu
-    def create_menu(self):
+    def insert_to_login (self):
         self.connection_rout
         self.connection
-        menu="CREATE TABLE IF NOT EXISTS MENU(food_id SERIAL NOT NULL PRIMARY KEY, food_item VARCHAR(25),food_description VARCHAR (25))"
+        name = ("domnic","dommy1")
+        login= "INSERT INTO  login(user_name,user_pw) VALUES('"+name[0]+"','"+name[1]+"')"
         cursor = self.connection.cursor()
-        cursor.execute(menu)
-        self.connection.commit()
-    
-    def insert_to_menu (self):
-        self.connection_rout
-        self.connection
-        name = ("","Ugali","Nice meal")
-        menu1= "INSERT INTO  menu(food_id,food_item,food_description) VALUES('"+name[0]+"','"+name[1]+"','"+name[2]+"')"
-        cursor = self.connection.cursor()
-        cursor.execute(menu1)
+        cursor.execute(login)
         self.connection.commit()
     
     
@@ -94,7 +86,7 @@ class MyDatabase:
         self.connection.commit()
         orders = cursor.fetchall()
         return  jsonify(orders)
-    
+
     # Get a specific order:
     def get_specific_order(self):
         self.connection_rout
@@ -140,15 +132,15 @@ class MyDatabase:
 
 
 if __name__=="__main__":
-        #MyDatabase.create_users(MyDatabase)
-        MyDatabase.all_orders(MyDatabase)
+        #MyDatabase.create_user(MyDatabase)
+        #MyDatabase.all_orders(MyDatabase)
         # MyDatabase.GetOne(MyDatabase)
          #MyDatabase.place_order(MyDatabase)
          #MyDatabase.all_orders(MyDatabase)
          #MyDatabase.update_order(MyDatabase)
         #MyDatabase.register_customer(MyDatabase)
          #MyDatabase.get_user_order(MyDatabase)
-         #MyDatabase.create_menu(MyDatabase)
+         MyDatabase.create_user(MyDatabase)
 
 
 
