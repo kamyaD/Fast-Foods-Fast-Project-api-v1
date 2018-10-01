@@ -1,6 +1,5 @@
 from flask import Flask
-from app.views.views import app
-
+from v3.views.api import app
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
