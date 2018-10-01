@@ -12,7 +12,7 @@ class MyDatabase:
     #creating user registration table
     def create_user(self):
         self.connection
-        table1 = "CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, name VARCHAR(25), password VARCHAR(25))"
+        table1 = "CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, name VARCHAR(25),email VARCHAR, password VARCHAR(25))"
         cursor = self.connection.cursor()
         cursor.execute(table1)
         self.connection.commit()
@@ -24,7 +24,7 @@ class MyDatabase:
     def create_menu(self):
         
         self.connection
-        menu="CREATE TABLE IF NOT EXISTS MENU(food_id SERIAL NOT NULL PRIMARY KEY, food_item VARCHAR(25),food_description VARCHAR (25))"
+        menu="CREATE TABLE IF NOT EXISTS MENU(food_id SERIAL NOT NULL PRIMARY KEY, food_name VARCHAR(25),food_desc VARCHAR (25), food_price INT)"
         cursor = self.connection.cursor()
         cursor.execute(menu)
         self.connection.commit()
@@ -68,18 +68,19 @@ class Orders(MyDatabase):
 
 
     def map_object(self, convert):
-        self.id = convert[0]
-        self.order_name = convert[1]
-        self.order_status = convert[2]
-        self.customer_name = convert[3]
 
+        order = Orders( order_name=convert[3], customer_name=convert[2])
+        order.id = convert[0]
+        order.date = convert[1]
+        order.order_status = convert[4]
+        self = order
         return self
 
 
     def all_orders(self):
         self.connection
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM orders(order_status) VALUES()")
+        cursor.execute("SELECT * FROM orders")
         self.connection.commit()
         orders = cursor.fetchall()
 
@@ -94,7 +95,7 @@ class Orders(MyDatabase):
         self.connection
 
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM orders WHERE order_id = %s"(id,))
+        cursor.execute("SELECT * FROM orders WHERE order_id=%s", (id,))
         order = cursor.fetchone()
         self.connection.commit()
 
@@ -107,7 +108,7 @@ class Orders(MyDatabase):
             order=cursor.execute("INSERT INTO orders(order_status) VALUES(%S)"),
             (self.order_status)
             self.connection.commit()
-        return order
+            return order
 
 
 
@@ -167,19 +168,10 @@ class User(MyDatabase):
             return self.map_object(user)
 
 
-
-
-
-
-
-
-
-
-
-
 class Menu(MyDatabase):
 
-    def __init__(self, food_name, food_desc, food_price):
+
+    def __init__(self, food_name=None, food_desc=None, food_price=None):
         super(Menu, self).__init__()
         self.food_name = food_name
         self.food_desc = food_desc
@@ -190,38 +182,51 @@ class Menu(MyDatabase):
         cursor = self.connection.cursor()
         cursor.execute("""
             INSERT INTO menu (food_name, food_desc, food_price)
-            VALUES (%s , %s, %s, %s)
+            VALUES (%s , %s, %s)
             """,
             (self.food_name, self.food_desc, self.food_price))
 
         self.connection.commit()
 
+    def map_object(self, convert):
+        
+        food = Menu( food_name=convert[1], food_desc=convert[2], food_price=convert[3])
+        food.id = convert[0]     
+        
+        self = food
+        return self
+
     def all_menu(self):
         self.connection
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM orders")
-        orders = cursor.fetchall()
+        cursor.execute("SELECT * FROM menu")
+        foods = cursor.fetchall()
         self.connection.commit()
 
+        if foods:
+            return [self.map_object(food)  for food in foods]
+
+    def get_food_by_id(self, id):
+        self.connection
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM menu WHERE id=%s", (id, ))
+
+        food = cursor.fetchone()
+
+        if food:
+            return self.map_object(food)
 
     
-
-    
-    
-    
-    
-    
-    
-    
-
+    def serialize(self):
+        return dict(
+            id=self.id,
+            name=self.food_name,
+            orderd_by=self.food_desc,
+            status = self.food_price
+        )
 
 
-
-
-
-
-
-
+        
 
 
 

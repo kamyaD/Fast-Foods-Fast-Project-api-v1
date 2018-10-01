@@ -102,14 +102,11 @@ class Orders(MyDatabase):
             return self.map_object(order)
 
     def update_order_status(self):
-            self.connection
-            cursor = self.connection.cursor()
-            order=cursor.execute("INSERT INTO orders(order_status) VALUES(%S)"),
-            (self.order_status)
-            self.connection.commit()
-        return order
-
-
+        self.connection
+        cursor = self.connection.cursor()
+        order=cursor.execute("INSERT INTO orders(order_status) VALUES(%S)"),
+        (self.order_status)
+        self.connection.commit()
 
 
 class User(MyDatabase):
@@ -165,16 +162,6 @@ class User(MyDatabase):
 
         if user:
             return self.map_object(user)
-
-
-
-
-
-
-
-
-
-
 
 
 class Menu(MyDatabase):
