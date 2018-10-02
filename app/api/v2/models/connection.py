@@ -61,10 +61,16 @@ class Orders(MyDatabase):
 
     def place_order(self):
         cursor = self.connection.cursor()
-        cursor.execute("INSERT INTO  orders(order_name, order_status, customer_name, order_date) VALUES(%s,%s,%s,%s)",
-                       (self.order_name, self.order_status, self.customer_name, self.date))
-        self.connection.commit()
+        cursor.execute("SELECT * FROM menu WHERE food_name='{}'".format(self.order_name))
+        menu = cursor.fetchone()
+        print(menu)
 
+        if not menu:
+            return jsonify({"message":"The food item you ordered does not exist in our menu"})
+
+        cursor.execute("INSERT INTO  orders(order_name, order_status, customer_name, order_date) VALUES(%s,%s,%s,%s)",
+                            (self.order_name, self.order_status, self.customer_name, self.date))
+        self.connection.commit()
 
     def map_object(self, convert):
 
