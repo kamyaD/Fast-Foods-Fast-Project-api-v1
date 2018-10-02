@@ -3,9 +3,7 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 
 from ..models.connection import MyDatabase, User , Orders, Menu
 
-
-app = Flask(__name__)
-api = Blueprint('api', __name__)
+api = Blueprint('api_v2', __name__)
 
 orders = []
 special = "[@_!#$%^&*()<>?/\\|}{~:]"
@@ -71,5 +69,3 @@ def deleteOrder(name):
             orders.remove(order)
     return jsonify({'orders': orders})
 
-
-app.register_blueprint(api, url_prefix='/api/v2')

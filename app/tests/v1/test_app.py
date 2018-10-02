@@ -1,11 +1,9 @@
 import json
 import unittest
 import os
-from app.views.views import app
-
+from app.tests.v1.test_config import app
 
 os.sys.path.append("../")
-
 
 class ApiEndpoints(unittest.TestCase):
 

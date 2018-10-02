@@ -3,12 +3,14 @@ from flask import jsonify
 import sys
 from datetime import datetime
 import os
+from instance.config import app_config
+
 
 class MyDatabase:
 
     def __init__(self):
-        #self.connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
-        self.connection = psycopg2.connect('DATABASE_URL')
+        self.connection_rout = app_config[os.getenv('APP_ENV')].DATABASE_URL
+        self.connection = psycopg2.connect(self.connection_rout)
 
     #creating user registration table
     def create_user(self):

@@ -1,10 +1,5 @@
+from app.tests.v2.test_config import app
 import unittest
-from flask import Flask
-
-import psycopg2
-app = Flask(__name__)
-
-
 
 class UserRegistration(unittest.TestCase):
     

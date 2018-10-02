@@ -5,7 +5,7 @@ from flask import Flask, render_template, jsonify, request,session,flash,redirec
 
  #define app and telling flask that template folder is named v1
 app = Flask(__name__)
-api = Blueprint('api', __name__)
+api_v1 = Blueprint('api_v1', __name__)
 
 
 
@@ -16,7 +16,7 @@ special = "[@_!#$%^&*()<>?/\\|}{~:]"
 # def getOrders():
 #     return jsonify({'message' : 'Itworks!'})
 
-@api.route('/orders', methods=['POST']) # Places a new Order
+@api_v1.route('/orders', methods=['POST']) # Places a new Order
 def addOrder():
     order_from_user = request.get_json()
     order = {}
@@ -32,12 +32,12 @@ def addOrder():
     return jsonify({'orders' : orders})
     
 
-@api.route('/orders', methods=['GET']) # GET API that gets all orders
+@api_v1.route('/orders', methods=['GET']) # GET api_v1 that gets all orders
 def returnAll():
     return jsonify({'orders': orders})
 
 
-@api.route('/orders/<int:name>', methods=['PUT']) # Update the status of an order
+@api_v1.route('/orders/<int:name>', methods=['PUT']) # Update the status of an order
 def editOrder(name):
     for order in orders:
         if order['id']== name:
@@ -48,7 +48,7 @@ def editOrder(name):
         return jsonify({'order' : orders})
 
 
-@api.route('/orders/<int:name>', methods=['GET']) # fetch Specific order
+@api_v1.route('/orders/<int:name>', methods=['GET']) # fetch Specific order
 def returnOne(name):
     for  order in orders:
         if order['id']== name:
@@ -56,11 +56,9 @@ def returnOne(name):
     return jsonify({"message":"Iten doesnt exist"})
 
 
-@api.route('/orders/<int:name>', methods=['Delete']) # Delete an order
+@api_v1.route('/orders/<int:name>', methods=['Delete']) # Delete an order
 def deleteOrder(name):
     for order in orders:
         if order['id']== name:
             orders.remove(order)
     return jsonify({'orders': orders})
-
-app.register_blueprint(api, url_prefix='/api/v1')
