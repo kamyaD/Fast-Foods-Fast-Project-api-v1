@@ -2,12 +2,13 @@ import psycopg2
 from flask import jsonify
 import sys
 from datetime import datetime
+import os
 
 class MyDatabase:
 
     def __init__(self):
-        self.connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
-        self.connection = psycopg2.connect(self.connection_rout)
+        #self.connection_rout = "host='localhost' dbname='orders' user='postgres' password='admin'"
+        self.connection = psycopg2.connect('DATABASE_URL')
 
     #creating user registration table
     def create_user(self):
