@@ -9,12 +9,11 @@ from instance.config import app_config
 class MyDatabase:
 
     def __init__(self):
-        self.connection_rout = os.getenv('DATABASE_URL')
+        self.connection_rout = app_config[os.getenv('APP_ENV')].DATABASE_URL
         self.connection = psycopg2.connect(self.connection_rout)
 
     #creating user registration table
     def create_user(self):
-        self.connection
         table1 = "CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, name VARCHAR(25),email VARCHAR, password VARCHAR(25))"
         cursor = self.connection.cursor()
         cursor.execute(table1)
@@ -24,8 +23,7 @@ class MyDatabase:
     
 
     # create menu
-    def create_menu(self):
-        
+    def create_menu(self):        
         self.connection
         menu="CREATE TABLE IF NOT EXISTS MENU(food_id SERIAL NOT NULL PRIMARY KEY, food_name VARCHAR(25),food_desc VARCHAR (25), food_price INT)"
         cursor = self.connection.cursor()
@@ -33,8 +31,7 @@ class MyDatabase:
         self.connection.commit()
 
     #creating Orders table
-    def  create_Orders(self):
-    
+    def  create_Orders(self):    
         self.connection_rout
         self.connection
         table2 = "CREATE TABLE IF NOT EXISTS orders(order_id SERIAL PRIMARY KEY,order_date DATE,customer_name VARCHAR(25) NOT NULL,order_name VARCHAR(25)," \
@@ -63,7 +60,6 @@ class Orders(MyDatabase):
         )
 
     def place_order(self):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("INSERT INTO  orders(order_name, order_status, customer_name, order_date) VALUES(%s,%s,%s,%s)",
                        (self.order_name, self.order_status, self.customer_name, self.date))
@@ -81,7 +77,6 @@ class Orders(MyDatabase):
 
 
     def all_orders(self):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM orders")
         self.connection.commit()
@@ -95,8 +90,6 @@ class Orders(MyDatabase):
         # Get a specific order:
 
     def get_specific_order(self, id):
-        self.connection
-
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM orders WHERE order_id=%s", (id,))
         order = cursor.fetchone()
@@ -106,7 +99,6 @@ class Orders(MyDatabase):
             return self.map_object(order)
 
     def update_order_status(self):
-            self.connection
             cursor = self.connection.cursor()
             order=cursor.execute("INSERT INTO orders(order_status) VALUES(%S)"),
             (self.order_status)
@@ -146,7 +138,6 @@ class User(MyDatabase):
 
 
     def get_user_by_name(self, name):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM users where name=%s" (name,))
 
@@ -160,7 +151,6 @@ class User(MyDatabase):
         self.connection.commit()
 
     def get_user_by_id(self, id):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM users where id=%s" (id,))
         user = cursor.fetchone()
@@ -181,7 +171,6 @@ class Menu(MyDatabase):
         self.food_price = food_price
 
     def insert_to_menu(self):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("""
             INSERT INTO menu (food_name, food_desc, food_price)
@@ -200,7 +189,6 @@ class Menu(MyDatabase):
         return self
 
     def all_menu(self):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM menu")
         foods = cursor.fetchall()
@@ -210,7 +198,6 @@ class Menu(MyDatabase):
             return [self.map_object(food)  for food in foods]
 
     def get_food_by_id(self, id):
-        self.connection
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM menu WHERE id=%s", (id, ))
 

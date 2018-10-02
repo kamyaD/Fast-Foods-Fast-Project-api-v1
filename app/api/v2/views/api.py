@@ -22,10 +22,13 @@ def addOrder():
     return jsonify({"message":"order place sucessfully"})
 
 @api.route('/orders', methods=['GET'])
-
 def returnAll():
     all = Orders().all_orders()
-    return  jsonify({"orders":[order.serialize() for order in all]})
+
+    if all:
+        return  jsonify({"orders":[order.serialize() for order in all]})
+    else:
+        return jsonify({"message":"Sorry the order list is empty"})
 
 
 @api.route('/menu', methods=['POST'])
