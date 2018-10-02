@@ -9,7 +9,7 @@ from instance.config import app_config
 class MyDatabase:
 
     def __init__(self):
-        self.connection_rout = app_config[os.getenv('APP_ENV')].DATABASE_URL
+        self.connection_rout = os.getenv('DATABASE_URL')
         self.connection = psycopg2.connect(self.connection_rout)
 
     #creating user registration table
