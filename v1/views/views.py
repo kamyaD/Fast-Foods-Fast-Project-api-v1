@@ -44,8 +44,8 @@ def editOrder(name):
             order['name']=request.get_json()['name']
             order['price']=request.get_json()['price']
             order['status']=request.get_json()['status']
-
-    return jsonify({'order' : orders})
+       
+        return jsonify({'order' : orders})
 
 
 @api.route('/orders/<int:name>', methods=['GET']) # fetch Specific order
