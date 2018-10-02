@@ -19,9 +19,9 @@ def addOrder():
 
     order = Orders(order_name, customer_name)
 
-    #print(order.order_name)
-
     order.place_order()
+
+    return jsonify({"message":"order place sucessfully"})
 
 @api.route('/orders', methods=['GET'])
 
@@ -29,24 +29,39 @@ def returnAll():
     all = Orders().all_orders()
     return  jsonify({"orders":[order.serialize() for order in all]})
 
-@api.route('/orders/<int:name>', methods=['PUT'])
-def editOrder(name):
-    for order in orders:
-        if order['id'] == name:
-            order['name'] = request.get_json()['name']
-            order['price'] = request.get_json()['price']
-            order['status'] = request.get_json()['status']
 
-        return jsonify({'order': orders})
+@api.route('/menu', methods=['POST'])
+
+def post_food():
+    
+    food_name = request.get_json()['food_name']
+    food_desc = request.get_json()['food_desc']
+    food_price = request.get_json()['food_price']
+    
+
+    food = Menu(food_name, food_desc, food_price)
+
+    food.insert_to_menu()
+
+    return jsonify({"message":"food created sucessfully"})
+
+
+@api.route('/menu', methods=['GET'])
+
+def returnMenu():
+    all = Menu().all_menu()
+
+    return  jsonify({"Menu":[menu.serialize() for menu in all]})
 
 
 
-@api.route('/orders/<int:name>', methods=['GET'])  # fetch Specific order
-def returnOne(name):
-    for order in orders:
-        if order['id'] == name:
-            return jsonify(order)
-    return jsonify({"message": "Item doesnt exist"})
+@api.route('/orders/<int:id>', methods=['GET'])
+def getOrder(id):
+
+    order = Orders().get_specific_order(id)
+    if order:
+        return jsonify({"order": order.serialize()})
+       
 
 
 @api.route('/orders/<int:name>', methods=['Delete'])  # Delete an order
