@@ -1,6 +1,7 @@
 # import objects from the Flask model
 from flask import (Blueprint, Flask, jsonify, make_response, redirect,
                    render_template, request, session, url_for)
+from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity
 
 from ..models.connection import Menu, MyDatabase, Orders, User
 
@@ -27,20 +28,18 @@ def returnAll():
     all = Orders().all_orders()
 
     if all:
-        return  jsonify({"orders":[order.serialize() for order in all]})
-    else:
-        return jsonify({"message":"Sorry the order list is empty"})
+        return  jsonify({"orders":[order.serialize() for order in all]})    
+    return jsonify({"message":"Sorry the order list is empty"})
 
 
 
 @api.route('/menu', methods=['POST'])
-
+@jwt_required
 def post_food():
     
     food_name = request.get_json()['food_name']
     food_desc = request.get_json()['food_desc']
     food_price = request.get_json()['food_price']
-    
 
     food = Menu(food_name, food_desc, food_price)
 
@@ -67,12 +66,7 @@ def getOrder(id):
        
 
 
-@api.route('/orders/<int:name>', methods=['Delete'])  # Delete an order
-def deleteOrder(name):
-    for order in orders:
-        if order['id'] == name:
-            orders.remove(order)
-    return jsonify({'orders': orders})
+
 
 # user registration
 @api.route('/user', methods=['POST']) 
@@ -98,7 +92,8 @@ def login():
         if password_user==user_found.password:
             data = {
                 'logged_in':True,
-                'name':name
+                'name':name,
+                'token': create_access_token(name)
             }
 
             return make_response(jsonify(
@@ -106,3 +101,10 @@ def login():
                 'message': "Success",
                 "data":data
                 }),200) 
+
+@api.route('/orders/<int:name>', methods=['PUT']) # Update the status of an order
+def editOrder(name):
+    for order in orders:
+        if order['id']== name:
+            order['status']=request.get_json()['status']
+       
