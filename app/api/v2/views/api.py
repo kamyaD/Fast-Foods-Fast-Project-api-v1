@@ -14,21 +14,16 @@ def addOrder():
 
     order_name = request.get_json()['order_name']
     customer_name = request.get_json()['customer_name']
-
     order = Orders(order_name, customer_name)
-
     order.place_order()
-
     return jsonify({"message":"order place sucessfully"})
 
 @api.route('/orders', methods=['GET'])
 def returnAll():
     all = Orders().all_orders()
-
     if all:
         return  jsonify({"orders":[order.serialize() for order in all]})
-    else:
-        return jsonify({"message":"Sorry the order list is empty"})
+    return jsonify({"message":"Sorry the order list is empty"})
 
 
 @api.route('/menu', methods=['POST'])
@@ -38,12 +33,8 @@ def post_food():
     food_name = request.get_json()['food_name']
     food_desc = request.get_json()['food_desc']
     food_price = request.get_json()['food_price']
-    
-
     food = Menu(food_name, food_desc, food_price)
-
     food.insert_to_menu()
-
     return jsonify({"message":"food created sucessfully"})
 
 
@@ -51,7 +42,6 @@ def post_food():
 
 def returnMenu():
     all = Menu().all_menu()
-
     return  jsonify({"Menu":[menu.serialize() for menu in all]})
 
 
