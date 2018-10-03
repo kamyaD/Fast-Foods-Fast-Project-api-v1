@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from flask import jsonify
 import sys
 from datetime import datetime
@@ -19,23 +20,41 @@ class MyDatabase:
         cursor.execute(table1)
         self.connection.commit()
 
-        
-    
+    @classmethod
+    def create_test_db(cls):
+
+        try:
+            connection_rout = app_config[os.getenv('APP_ENV')].DATABASE_CREATE_URL
+            connection = psycopg2.connect(connection_rout)
+            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            cursor = connection.cursor()
+            cursor.execute("CREATE DATABASE {}".format(app_config[os.getenv('APP_ENV')].DB_NAME))
+            connection.commit()
+
+            return True
+        except:
+            return False
 
     # create menu
     def create_menu(self):        
         self.connection
-        menu="CREATE TABLE IF NOT EXISTS MENU(food_id SERIAL NOT NULL PRIMARY KEY, food_name VARCHAR(25),food_desc VARCHAR (25), food_price INT)"
+        menu="CREATE TABLE IF NOT EXISTS menu(food_id SERIAL NOT NULL PRIMARY KEY, food_name VARCHAR(25),food_desc VARCHAR (25), food_price INT)"
         cursor = self.connection.cursor()
         cursor.execute(menu)
         self.connection.commit()
 
     #creating Orders table
-    def  create_Orders(self):    
+    def  create_orders(self):    
         self.connection_rout
         self.connection
         table2 = "CREATE TABLE IF NOT EXISTS orders(order_id SERIAL PRIMARY KEY,order_date DATE,customer_name VARCHAR(25) NOT NULL,order_name VARCHAR(25)," \
                  " order_status VARCHAR(25))"
+        cursor = self.connection.cursor()
+        cursor.execute(table2)
+        self.connection.commit()
+
+    def teardown(self):    
+        table2 = "DROP ALL TABLES"
         cursor = self.connection.cursor()
         cursor.execute(table2)
         self.connection.commit()
@@ -44,7 +63,7 @@ class MyDatabase:
 class Orders(MyDatabase):
 
     def __init__(self, order_name = None, customer_name=None):
-        super(Orders, self).__init__()
+        super().__init__()
         self.order_name = order_name
         self.order_status = "pending"
         self.customer_name = customer_name
@@ -116,21 +135,19 @@ class Orders(MyDatabase):
 
 class User(MyDatabase):
 
-    def __init__(self, name, email, password):
-        super(User, self).__init__()
+    def __init__(self, name = "", email= "", password= ""):
+        super().__init__()
         self.name = name
         self.email = email
         self.password = password
 
 
-    def insert_to_menu(self):
-        self.connection
+    def insert_to_user(self):
         cursor = self.connection.cursor()
         cursor.execute("""
             INSERT INTO users (name, email, password)
-            VALUES (%s , %s, %s)
-            """,
-            (self.name, self.email, self.password))
+            VALUES ('%s' , '%s', '%s')
+            """ % (self.name, self.email, self.password))
 
         self.connection.commit()
 
@@ -145,16 +162,13 @@ class User(MyDatabase):
 
     def get_user_by_name(self, name):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users where name=%s" (name,))
-
+        cursor.execute("SELECT * FROM users WHERE name= '%s'" % (name))
+ 
         user = cursor.fetchone()
         self.connection.commit()
 
         if user:
             return self.map_object(user)
-
-
-        self.connection.commit()
 
     def get_user_by_id(self, id):
         cursor = self.connection.cursor()
@@ -165,13 +179,14 @@ class User(MyDatabase):
 
         if user:
             return self.map_object(user)
-
+    
+    
 
 class Menu(MyDatabase):
 
 
     def __init__(self, food_name=None, food_desc=None, food_price=None):
-        super(Menu, self).__init__()
+        super().__init__()
         self.food_name = food_name
         self.food_desc = food_desc
         self.food_price = food_price

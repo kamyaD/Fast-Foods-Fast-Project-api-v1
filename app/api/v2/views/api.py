@@ -1,7 +1,8 @@
 # import objects from the Flask model
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for, Blueprint
+from flask import (Blueprint, Flask, jsonify, make_response, redirect,
+                   render_template, request, session, url_for)
 
-from ..models.connection import MyDatabase, User , Orders, Menu
+from ..models.connection import Menu, MyDatabase, Orders, User
 
 api = Blueprint('api_v2', __name__)
 
@@ -31,6 +32,7 @@ def returnAll():
         return jsonify({"message":"Sorry the order list is empty"})
 
 
+
 @api.route('/menu', methods=['POST'])
 
 def post_food():
@@ -52,7 +54,7 @@ def post_food():
 def returnMenu():
     all = Menu().all_menu()
 
-    return  jsonify({"Menu":[menu.serialize() for menu in all]})
+    return  jsonify({"menu":[menu.serialize() for menu in all]})
 
 
 
@@ -72,3 +74,35 @@ def deleteOrder(name):
             orders.remove(order)
     return jsonify({'orders': orders})
 
+# user registration
+@api.route('/user', methods=['POST']) 
+def register():
+    name = request.get_json()['name' ]
+    email = request.get_json()['email']
+    password = request.get_json()['password']
+    register=User(name,email,password)
+    register.insert_to_user()
+    return jsonify({"message":"registration successful"})
+
+@api.route('/login', methods=['POST']) 
+def login():
+    name = request.get_json()['name']
+    password_user = request.get_json()['password']
+
+    login_data = User()
+    user_found = login_data.get_user_by_name(name)
+    
+
+    if user_found:
+
+        if password_user==user_found.password:
+            data = {
+                'logged_in':True,
+                'name':name
+            }
+
+            return make_response(jsonify(
+                {
+                'message': "Success",
+                "data":data
+                }),200) 

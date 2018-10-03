@@ -10,7 +10,7 @@ def init_db():
     db = MyDatabase()
 
     db.create_user()
-    db.create_Orders()
+    db.create_orders()
     db.create_menu()
 
 if __name__ == '__main__':
