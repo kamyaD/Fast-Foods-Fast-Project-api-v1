@@ -54,6 +54,9 @@ def returnMenu():
     all = Menu().all_menu()
 
     return  jsonify({"menu":[menu.serialize() for menu in all]})
+ return jsonify({"message":"Sorry the menu  list is empty"})
+
+
 
 
 
