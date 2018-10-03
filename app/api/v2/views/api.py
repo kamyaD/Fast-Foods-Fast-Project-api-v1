@@ -52,9 +52,9 @@ def post_food():
 
 def returnMenu():
     all = Menu().all_menu()
-
-    return  jsonify({"menu":[menu.serialize() for menu in all]})
- return jsonify({"message":"Sorry the menu  list is empty"})
+    if all:
+        return  jsonify({"menu":[menu.serialize() for menu in all]})
+    return jsonify({"message":"Sorry the menu  list is empty"})
 
 
 
@@ -110,4 +110,36 @@ def editOrder(name):
     for order in orders:
         if order['id']== name:
             order['status']=request.get_json()['status']
-       
+    
+@api.route('/orders/<string:name>', methods=['GET']) 
+def userHistry(name):
+    user_histry = Orders(customer_name=name).get_user_order_histry()
+    
+
+    if user_histry:
+        return make_response(
+            jsonify({
+                "user_histry": user_histry
+                })
+            )
+    else:
+        return make_response(
+            jsonify({"message":"The customer order does not exist"}),404
+        )
+
+
+@api.route('/orders/<int:name>', methods=['PUT']) # Update the status of an order
+def editStatus(name):
+    for order in orders:
+        if order['id']== name:
+
+            order['name']=request.get_json()['name']
+            order['price']=request.get_json()['price']
+            order['status']=request.get_json()['status']
+            order = Orders(order_name, customer_name)
+
+    order.place_order()
+
+    return make_response(
+        jsonify({"message":"order status updated sucessfully"}),200
+        )

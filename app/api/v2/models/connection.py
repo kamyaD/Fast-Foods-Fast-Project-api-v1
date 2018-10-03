@@ -125,11 +125,19 @@ class Orders(MyDatabase):
 
     def update_order_status(self):
             cursor = self.connection.cursor()
-            order=cursor.execute("INSERT INTO orders(order_status) VALUES(%S)"),
-            (self.order_status)
+            cursor.execute("INSERT INTO orders(order_status) VALUES(%s)"%
+            (self.order_status))
             self.connection.commit()
             return order
 
+    def get_user_order_histry(self):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM orders WHERE customer_name = '%s' " % (self.customer_name))
+        
+        orders = cursor.fetchall()
+        self.connection.commit()
+
+        return orders
 
 
 
@@ -162,7 +170,7 @@ class User(MyDatabase):
 
     def get_user_by_name(self, name):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE name= '%s'" % (name))
+        cursor.execute("SELECT * FROM users WHERE name = %s " % (name))
  
         user = cursor.fetchone()
         self.connection.commit()
