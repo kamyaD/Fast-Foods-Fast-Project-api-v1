@@ -71,12 +71,13 @@ def getOrder(id):
 # user registration
 @api.route('/user', methods=['POST'])
 def register():
+    print(request.get_json())
     name = request.get_json()['name']
     email = request.get_json()['email']
     password = request.get_json()['password']
     register = User(name, email, password)
     register.insert_to_user()
-    return jsonify({"message": "registration successful"})
+    return jsonify({"message": "registration successful"}),201
 
 
 @api.route('/login', methods=['POST'])
