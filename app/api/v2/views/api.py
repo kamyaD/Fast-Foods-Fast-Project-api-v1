@@ -10,19 +10,17 @@ api = Blueprint('api_v2', __name__)
 orders = []
 special = "[@_!#$%^&*()<>?/\\|}{~:]"
 
+
 def empty_input(name):
     if not name or name.strip() == "":
         abort(400)
-        #return jsonify({"message": " name can't be blank"}), 401
+        # return jsonify({"message": " name can't be blank"}), 401
+
 
 @api.route('/orders', methods=['POST'])  # Places a new Order
 @jwt_required
 def addOrder():
-
     identity = get_jwt_identity()
-
-    # import pdb; pdb.set_trace()
-
     order_name = request.get_json()['order_name']
     empty_input(order_name)
     customer_name = request.get_json()['customer_name']
@@ -84,28 +82,26 @@ def register():
 @api.route('/login', methods=['POST'])
 def login():
     name = request.get_json()['name']
-    empty_input(name)
     password_user = request.get_json()['password']
     user_found = User().get_user_by_name(name)
     print(user_found.__dict__['password'])
 
     if user_found:
 
-        if password_user == user_found.__dict__['password']:
+        if password_user==user_found.password:
             data = {
-                'logged_in': True,
-                'name': name,
+                'logged_in':True,
+                'name':name,
                 'token': create_access_token(name)
-
-            }
+                }
 
             return make_response(jsonify(
                 {
-                    'message': "Success",
-                    "data": data
-                }))
+                'message': "Success",
+                'data':data
+                }),200) 
+        return jsonify({"message": "User not found"})
         
-
 # Update the status of an order
 @api.route('/orders/<int:name>', methods=['PUT'])
 @jwt_required
