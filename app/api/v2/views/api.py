@@ -2,7 +2,7 @@
 from flask import (Blueprint, Flask, jsonify, make_response, redirect,
                    render_template, request, session, url_for, abort)
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
+import datetime
 from ..models.connection import Menu, MyDatabase, Orders, User
 
 api = Blueprint('api_v2', __name__)
@@ -85,7 +85,6 @@ def login():
     name = request.get_json()['name']
     password_user = request.get_json()['password']
     user_found = User().get_user_by_name(name)
-    print(user_found.__dict__['password'])
 
     if user_found:
 
@@ -93,7 +92,7 @@ def login():
             data = {
                 'logged_in':True,
                 'name':name,
-                'token': create_access_token(name)
+                'token': create_access_token(name,expires_delta=datetime.timedelta(minutes=15))
                 }
 
             return make_response(jsonify(
@@ -104,12 +103,27 @@ def login():
         return jsonify({"message": "User not found"})
         
 # Update the status of an order
-@api.route('/orders/<int:name>', methods=['PUT'])
+@api.route('/orders/<int:order_id>', methods=['PUT'])
 @jwt_required
-def editOrder(name):
-    for order in orders:
-        if order['id'] == name:
-            order['status'] = request.get_json()['status']
+def editOrder(order_id):
+    order= Orders().get_specific_order(order_id)
+
+    if order:
+        order.order_status = request.get_json()['status']
+        order.update_order_status()
+
+        return make_response(
+            jsonify({
+                'message':'Order status successully updated!'
+            }),200
+        )
+
+    return make_response(
+            jsonify({
+                'message':'Order not found!'
+            }),404
+        )
+
 
 
 @api.route('/orders/<string:name>', methods=['GET'])

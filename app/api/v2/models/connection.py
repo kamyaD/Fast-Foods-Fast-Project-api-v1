@@ -100,8 +100,8 @@ class Orders(MyDatabase):
         order.id = convert[0]
         order.date = convert[1]
         order.order_status = convert[4]
-        self = order
-        return self
+
+        return order
 
     def all_orders(self):
         cursor = self.connection.cursor()
@@ -125,10 +125,11 @@ class Orders(MyDatabase):
 
     def update_order_status(self):
         cursor = self.connection.cursor()
-        cursor.execute("INSERT INTO orders(order_status) VALUES(%s)" %
-                       (self.order_status))
+        cursor.execute("UPDATE orders SET order_status = '%s' WHERE order_id = %s " %
+                       (self.order_status, self.id))
+                       
         self.connection.commit()
-        return order
+        return True
 
     def get_user_order_histry(self):
         cursor = self.connection.cursor()

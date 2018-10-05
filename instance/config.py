@@ -18,8 +18,6 @@ class TestingConfig(Config):
     ENV = "development"
     DATABASE_URL = "host='localhost' dbname='orders_test' user='postgres' password='admin'"
     
-    DB_NAME = "orders_test"
-
 app_config = {
     'production':ProductionConfig,
     'development':DevelopmentConfig,
