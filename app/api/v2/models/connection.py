@@ -127,7 +127,7 @@ class Orders(MyDatabase):
         cursor = self.connection.cursor()
         cursor.execute("UPDATE orders SET order_status = '%s' WHERE order_id = %s " %
                        (self.order_status, self.id))
-                       
+
         self.connection.commit()
         return True
 
@@ -239,6 +239,6 @@ class Menu(MyDatabase):
         return dict(
             id=self.id,
             name=self.food_name,
-            orderd_by=self.food_desc,
-            status=self.food_price
+            description=self.food_desc,
+            price=self.food_price
         )
